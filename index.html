@@ -114,8 +114,9 @@ dl.kv dd{margin:0;padding:6px 10px;border-bottom:1px solid var(--grey2)}
    SET-UP: the Controller pastes two values here (see the Web Page Set-up Guide), then saves the file.
    ==================================================================================================== */
 var CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbw4-et4uLRo39DYuI4CDArAkCXGKKNn7E0Eh8SfV2wr9k3VGMY8Jt4uGbQzYXkfBb_lJg/exec',        // the Web app URL from Apps Script > Deploy
-  CLIENT_ID: '842320608503-dbjlaggfevm93jrlkjvoplvv9eecjorv.apps.googleusercontent.com',        // the Google sign-in client ID (ends with .apps.googleusercontent.com)
+  API_URL: 'PASTE_WEB_APP_URL_HERE',        // the Web app URL from Apps Script > Deploy
+  CLIENT_ID: 'PASTE_CLIENT_ID_HERE',        // the Google sign-in client ID (ends with .apps.googleusercontent.com)
+  LMS_URL: 'https://lms.kdu.ac.lk/moodle/course/index.php?categoryid=566',   // the FGS LMS (Moodle)
   HELP_TEXT: 'Need help? Please contact the Faculty of Graduate Studies office.'
 };
 var GROUPS = {"Home":"core","Guide":"core","Dash_Executive":"core","Programmes":"core","Staff":"core","Students":"core","Applications":"core","Registrations":"core","Dash_Academic":"academic","Modules":"academic","Timetable":"academic","Attendance":"academic","Assessments":"academic","Dash_Research":"research","View_Student":"research","View_Lecturer":"research","View_Examiner":"research","Research":"research","Progress_Reports":"research","Thesis_Exam":"research","Publications":"research","Dash_Finance":"finance","Payments":"finance","Fee_Ledger":"finance","Budget":"finance","Claims":"finance","Dash_Quality":"quality","Feedback":"quality","Requests":"quality","Graduates":"quality","Notices":"quality","Benchmark_Study":"quality","Document_Register":"system","Access_Control":"system","Role_Matrix":"system","Data_Dictionary":"system","Config":"system","Lists":"system","Audit_Log":"system","Report_Catalogue":"system","Report_Log":"system"};
@@ -187,6 +188,7 @@ async function door(message) {
   app.innerHTML = '<div class="door">' + hero() +
     '<div class="card signin">' + (message ? msg('err', esc(message)) : '') + '<h2 style="margin-top:0">Sign in</h2><p class="sub">Use the Google account the Faculty has approved for you.</p><div class="g" id="gbtn"></div>' +
     '<p class="small sub">Never share your Google password. The Faculty will never ask for it.</p></div>' +
+    '<div class="card"><h2 style="margin-top:0">FGS LMS</h2><p class="sub">Lecture materials, videos and course pages are on the Faculty\'s learning management system (LMS).</p><p><a class="btn go" style="display:inline-block;text-decoration:none" href="' + esc(safeUrl(CONFIG.LMS_URL)) + '" target="_blank" rel="noopener">Open the FGS LMS</a></p></div>' +
     '<div id="pubbox"><p class="sub"><span class="spin"></span>Loading notices...</p></div>' +
     '<div class="card"><h2 style="margin-top:0">How to get access</h2><div class="three">' +
     '<div class="t-lav"><b>1. Registered</b>The Faculty Registry adds you to the records with your Google address.</div>' +
@@ -238,7 +240,7 @@ function shell() {
   var me = S.me;
   $('#app').innerHTML = '<header class="top"><img src="' + SEAL + '" alt=""><div class="ttl">KDU FGS MIS<span>Faculty of Graduate Studies</span></div>' +
     '<div class="who"><b>' + esc(me.name) + '</b><br><span class="small">' + (me.roleLabel !== me.name ? chip(me.roleLabel, 'lav') + ' ' : '') + '</span><button class="btn sm" id="so">Sign out</button></div></header>' +
-    '<div class="wrap"><nav id="nav" aria-label="Main">' + me.nav.map(function (n) { return '<a href="#' + n.id + '" data-p="' + n.id + '">' + esc(n.label) + '</a>'; }).join('') + '</nav><main id="main" tabindex="-1"></main></div>' +
+    '<div class="wrap"><nav id="nav" aria-label="Main">' + me.nav.map(function (n) { return '<a href="#' + n.id + '" data-p="' + n.id + '">' + esc(n.label) + '</a>'; }).join('') + '<a href="' + esc(safeUrl(CONFIG.LMS_URL)) + '" target="_blank" rel="noopener">FGS LMS &#8599;</a></nav><main id="main" tabindex="-1"></main></div>' +
     '<footer>General Sir John Kotelawala Defence University | Faculty of Graduate Studies | ' + VERSION_TXT + ' | script ' + esc(me.version) + '</footer>';
   $('#so').onclick = function () { signOut(); };
 }
